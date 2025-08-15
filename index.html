@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS for advanced calculator with black/red theme */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a1a, #4a0000); /* Black and red gradient */
+            font-family: 'Arial', sans-serif;
+            position: relative;
+        }
+
+        /* Hello Umar heading */
+        .heading {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 50px;
+            font-weight: 900;
+            color: #ff0000; /* Red text */
+            background: #000000; /* Black background */
+            padding: 8px 15px;
+            border: 3px solid #ff0000;
+            border-radius: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            z-index: 2;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap; /* Ensure single line */
+        }
+
+        .calculator {
+            background: rgba(0, 0, 0, 0.7); /* Black with transparency */
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3); /* Red shadow */
+            padding: 20px;
+            width: 450px; /* Increased width for more buttons */
+            border: 2px solid #ff0000; /* Red border */
+            box-sizing: border-box;
+            z-index: 1;
+            margin-top: 100px;
+        }
+
+        .display {
+            background: #1a1a1a; /* Black */
+            color: #ff0000; /* Red text */
+            font-size: 2.5em;
+            text-align: right;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            border: 1px solid #ff0000; /* Red border */
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 columns for new functions */
+            gap: 10px;
+        }
+
+        button {
+            background: rgba(255, 0, 0, 0.3); /* Red with transparency */
+            border: 1px solid #ff0000; /* Red border */
+            color: #fff;
+            font-size: 1.2em; /* Slightly smaller for more buttons */
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background: rgba(255, 0, 0, 0.5); /* Brighter red on hover */
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .operator {
+            background: rgba(255, 0, 0, 0.5); /* Brighter red */
+        }
+
+        .operator:hover {
+            background: rgba(255, 0, 0, 0.7);
+        }
+
+        .scientific {
+            background: rgba(255, 0, 0, 0.4); /* Slightly different red for scientific */
+        }
+
+        .scientific:hover {
+            background: rgba(255, 0, 0, 0.6);
+        }
+
+        .memory {
+            background: rgba(0, 0, 0, 0.4); /* Black for memory functions */
+        }
+
+        .memory:hover {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .equal {
+            background: rgba(0, 0, 0, 0.5); /* Black */
+        }
+
+        .equal:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .clear {
+            background: rgba(255, 0, 0, 0.6); /* Bright red */
+        }
+
+        .clear:hover {
+            background: rgba(255, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hello Umar heading -->
+    <div class="heading">Hello Umar</div>
+
+    <!-- Calculator -->
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <!-- Memory and scientific functions in first row -->
+            <button class="memory" onclick="memoryClear()">MC</button>
+            <button class="memory" onclick="memoryRecall()">MR</button>
+            <button class="memory" onclick="memoryAdd()">M+</button>
+            <button class="memory" onclick="memorySubtract()">M-</button>
+            <button class="scientific" onclick="appendToDisplay('Math.PI')">π</button>
+            <!-- Numbers and operators -->
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="scientific" onclick="applyFunction('sin')">sin</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('*')">*</button>
+            <button class="scientific" onclick="applyFunction('cos')">cos</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            <button class="scientific" onclick="applyFunction('tan')">tan</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            <button class="scientific" onclick="applyFunction('sqrt')">√</button>
+            <!-- Additional scientific and financial functions -->
+            <button class="scientific" onclick="applyFunction('square')">x²</button>
+            <button class="scientific" onclick="appendToDisplay('**')">xʸ</button>
+            <button class="scientific" onclick="applyFunction('log')">log</button>
+            <button class="scientific" onclick="applyFunction('ln')">ln</button>
+            <button class="equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for advanced calculator functionality
+        const display = document.getElementById('display');
+        let currentInput = '0';
+        let memory = 0;
+
+        function appendToDisplay(value) {
+            if (currentInput === '0' && value !== '.') {
+                currentInput = value;
+            } else {
+                currentInput += value;
+            }
+            display.textContent = currentInput;
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            display.textContent = currentInput;
+        }
+
+        function memoryClear() {
+            memory = 0;
+            display.textContent = currentInput;
+        }
+
+        function memoryRecall() {
+            currentInput = memory.toString();
+            display.textContent = currentInput;
+        }
+
+        function memoryAdd() {
+            try {
+                memory += eval(currentInput);
+                display.textContent = currentInput;
+            } catch (error) {
+                display.textContent = 'Error';
+                currentInput = '0';
+            }
+        }
+
+        function memorySubtract() {
+            try {
+                memory -= eval(currentInput);
+                display.textContent = currentInput;
+            } catch (error) {
+                display.textContent = 'Error';
+                currentInput = '0';
+            }
+        }
+
+        function applyFunction(func) {
+            try {
+                let value = parseFloat(currentInput);
+                let result;
+                switch (func) {
+                    case 'sin':
+                        result = Math.sin(value * Math.PI / 180); // Degrees to radians
+                        break;
+                    case 'cos':
+                        result = Math.cos(value * Math.PI / 180);
+                        break;
+                    case 'tan':
+                        result = Math.tan(value * Math.PI / 180);
+                        break;
+                    case 'sqrt':
+                        result = Math.sqrt(value);
+                        break;
+                    case 'square':
+                        result = value * value;
+                        break;
+                    case 'log':
+                        result = Math.log10(value);
+                        break;
+                    case 'ln':
+                        result = Math.log(value);
+                        break;
+                    default:
+                        result = value;
+                }
+                currentInput = result.toString();
+                display.textContent = currentInput;
+            } catch (error) {
+                display.textContent = 'Error';
+                currentInput = '0';
+            }
+        }
+
+        function calculate() {
+            try {
+                currentInput = eval(currentInput).toString();
+                display.textContent = currentInput;
+            } catch (error) {
+                display.textContent = 'Error';
+                currentInput = '0';
+            }
+        }
+    </script>
+</body>
+</html>
